@@ -1,0 +1,56 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+{% block css %}
+<style>
+    body{
+        width: 100%;
+        
+        background-image: url( "{% static 'img/perp.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: 100%;
+    
+    }
+    .card-body{
+        height:800px;
+        border:2px solid bisque;
+    }
+</style>
+{% endblock css %}
+
+
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6 mx-auto">
+                <form class="card text-white bg-transparent" method="POST" enctype="multipart/form-data">
+                    <div class="card-header text-center">
+                        <h5>Upload your AI model here</h5>
+                    </div>
+                    <div class="card-body">
+                        {% csrf_token %}
+                        {{ uploadform|crispy }}
+                    </div>
+                    
+                        <button class="btn btn-outline-warning btn-lg btn-block">Save </button>
+                    
+                </form>
+            </div>
+            
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    
+{% endblock js %}
+    
+    
+    
+

@@ -1,0 +1,131 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+
+{% block css %}
+    <style>
+    
+        
+            
+        
+        .container1{
+            width:1000px;
+            margin-top: 100px;
+            margin-left: 160px;
+        }
+    </style>
+{% endblock css %}
+
+
+
+{% block content %}
+    
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid ">
+        <a class="navbar-brand" href="#">
+            <h4>Hello, <b>{{user.username | default:'Guest'}}</b></h4>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class=divi>
+            <ul class="navbar-nav">
+                <li>
+                    <a class="nav-link " href="/" role="button">HOME</a>
+                </li>
+                <li class="nav-item">
+                    {% if user.is_authenticated %}
+                    <a class="nav-link " href="{% url 'upload_ai_model' %}" role="button">Upload Models</a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'login' %}" role="button">Upload models</a>
+                    {% endif %}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_model' %}" role="button">View Models</a>
+                </li>
+                {% if user.is_authenticated %}
+                <a class="nav-link " href="{% url 'logout' %}" role="button">Logout</a>
+                {% else %}
+                <a class="nav-link" href="{% url 'login' %}" role="button">Login</a>
+                <a class="btn btn-warning cizu" href="{% url 'register' %}" role="button">Sign up</a>
+                {% endif %}</a>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <form class="form-inline" action="{% url 'search_ai_model' %}">
+                <div class="form-group">
+                    <label for="q"><i class="fa fa-search" aria-hidden="true"></i></label>
+                    <input type="text" name="q" id="q" class="form-control" placeholder="model name" aria-describedby="helpId">
+                    <button class="btn btn-md btn-success">Search</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+      
+    
+
+    
+
+    <div class="container1">
+        <div class="row">
+            
+            {% for record in page_obj %}
+                <div class="col-lg-6  col-xs-4 my-2">
+                    <div class="card text-white bg-info">
+                      <a href="{% url 'detail_model' record.id %}"><img class="card-img-top" src="{{ record.model_image.url }}" alt=""></a>
+                      <div class="card-body">
+                        <h4 class="card-title"><a class="text-white" href="{% url 'detail_model' record.id %}">{{record.name}}</a></h4>                        
+                      </div>
+                    </div>
+                </div>
+
+
+                
+            {% empty %}
+                <p class="lead">No records found</p>
+            {% endfor %}
+            
+        </div>
+        <div class="row">
+            <div class="col">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item"><a href="?page=1" class="page-link">&laquo; first</a></li>
+                            <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">previous</a></li>
+                        {% endif %}
+    
+                        <li class="page_obj number" aria-current="page">
+                            <a class="page-link">
+                            page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            </a>
+                        </li>
+                        {% if page_obj.has_next %}
+                        <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Next</a></li>
+                        <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Last &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+
+{% block js %}
+    
+{% endblock js %}
+    
